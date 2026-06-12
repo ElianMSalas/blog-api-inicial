@@ -29,7 +29,7 @@ const getCommentsByPost = async (postId, query = {}) => {
       total,
       page: Number(page),
       limit: Number(limit),
-      totalPages: Math.cell(total / limit),
+      totalPages: Math.ceil(total / limit),
     },
   };
 };
