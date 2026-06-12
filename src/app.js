@@ -33,8 +33,7 @@ const authLimiter = rateLimit({
 
 app.use(morgan("dev"));
 app.use(express.json());
-app.use(limiter);
-app.use(authLimiter);
+
 
 // Health check
 app.get("/health", (req, res) => {
@@ -47,7 +46,7 @@ app.get("/health", (req, res) => {
 // Rutas
 app.use("/api/auth", authLimiter, require("./routes/auth.routes"));
 app.use("/api/posts", limiter, require("./routes/post.routes"));
-app.use("/api/comments", limiter, require("./routes/comment.routes"));
+app.use("/api", limiter, require("./routes/comment.routes"));
 
 // Ruta no encontrada (debe ir antes del errorHandler y después de todas las rutas)
 app.use((req, res, next) => {
