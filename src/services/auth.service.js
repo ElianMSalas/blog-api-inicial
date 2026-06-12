@@ -13,7 +13,8 @@ const generateToken = (userId) => {
 // Registro
 const register = async ({ name, email, password }) => {
     //Verificar si el email ya existe
-    const existingUser = await User.findOne({ email });
+    const cleanEmail = email.toLowerCase().trim();
+    const existingUser = await User.findOne({ email: cleanEmail });
     if (existingUser) {
         const error = new Error("El email ya está registrado");
         error.statusCode = 409; // Conflict
@@ -40,7 +41,8 @@ const register = async ({ name, email, password }) => {
 // Login
 const login = async ({ email, password }) => {
     // Buscar usuario por email (select("+password") porque tiene select:false)
-    const user = await User.findOne({ email }).select("+password");
+    const cleanEmail = email.toLowerCase().trim();
+    const user = await User.findOne({ email: cleanEmail }).select("+password");
     if (!user) {
         const error = new Error("Credenciales invalidas");
         error.statusCode = 401;
