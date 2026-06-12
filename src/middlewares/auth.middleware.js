@@ -19,7 +19,7 @@ const protect = async (req, res, next) => {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
         // Verificar que el usuario todavía existe en la BD
-        const user = await User.findById(decoded.id);
+        const user = await User.findById(decoded.id).select("_id name email role");
         if (!user) {
             return res.status(401).json({
                 status: "error",
