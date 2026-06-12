@@ -14,7 +14,7 @@ API REST para gestión de un blog con posts, comentarios y autenticación basada
 ## Instalación
 
 ```bash
-git clone https://github.com/ElianMSalas/blog-api-inicial
+git clone https://github.com/ElianMSalas/blog-api-inicial.git
 cd blog-api
 npm install
 cp .env.example .env
