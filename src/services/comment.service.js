@@ -2,7 +2,10 @@ const Comment = require("../models/comment.model");
 const Post = require("../models/post.model");
 
 // ─── Obtener comentarios de un post ───────────────────────────────────────────
-const getCommentsByPost = async (postId) => {
+const getCommentsByPost = async (postId, query = {}) => {
+  const { page = 1, limit = 10 } = query;
+  const skip = (page - 1) * limit;
+  
   // Verificar que el post existe
   const post = await Post.findById(postId);
   if (!post) {
@@ -11,11 +14,24 @@ const getCommentsByPost = async (postId) => {
     throw error;
   }
 
-  const comments = await Comment.find({ post: postId })
-    .populate("author", "name email")
-    .sort({ createdAt: -1 });
+  const [comments, total] = await Promise.all([
+    Comment.find({ post: postId })
+      .populate("author", "name email")
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(Number(limit)),
+    Comment.countDocuments({ post: postId }),
+  ]);
 
-  return comments;
+  return {
+    comments,
+    pagination: {
+      total,
+      page: Number(page),
+      limit: Number(limit),
+      totalPages: Math.cell(total / limit),
+    },
+  };
 };
 
 // ─── Crear un comentario ──────────────────────────────────────────────────────
