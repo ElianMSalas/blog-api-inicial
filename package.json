@@ -9,6 +9,10 @@
     "test": "cross-env NODE_ENV=test jest --runInBand",
     "test:coverage": "cross-env NODE_ENV=test jest --coverage"
   },
+  "jest": {
+    "testTimeout": 30000,
+    "setupFiles": ["<rootDir>/tests/setup.js"]
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
